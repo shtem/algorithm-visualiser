@@ -2,9 +2,10 @@ import pygame
 from resources.const import ROWS, WIDTH
 from resources.helper_funcs import make_grid, draw, get_clicked_pos
 from algorithms.astar import a_star_alg
+from algorithms.dijkstra import dijkstra_alg
 
 WIN = pygame.display.set_mode((WIDTH, WIDTH))
-pygame.display.set_caption("A* Path Finding Algorithm")
+pygame.display.set_caption("Algorithm Visualiser")
 
 def main(win, width):
     grid = make_grid(ROWS, width)
@@ -50,14 +51,23 @@ def main(win, width):
                     goal = None
             
             if event.type == pygame.KEYDOWN: # start A* algorithm
-                if event.key == pygame.K_SPACE and source and goal:
+
+                if event.key == pygame.K_a and source and goal: # PRESS A = A STAR ALG
+                    pygame.display.set_caption("A* Path Finding Algorithm")
                     for row in grid:
                         for node in row:
                             node.update_neighbours(grid)
-
                     a_star_alg(lambda: draw(win, grid, ROWS, width), grid, source, goal)
+
+                if event.key == pygame.K_d and source and goal: # PRESS D = DIJKSTRA ALG
+                    pygame.display.set_caption("Dijkstra's Path Finding Algorithm")
+                    for row in grid:
+                        for node in row:
+                            node.update_neighbours(grid)
+                    dijkstra_alg(lambda: draw(win, grid, ROWS, width), grid, source, goal)
                 
                 if event.key == pygame.K_c: # clear screen
+                    pygame.display.set_caption("Algorithm Visualiser")
                     source = None
                     goal = None
                     grid = make_grid(ROWS, width)
