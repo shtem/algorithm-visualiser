@@ -1,5 +1,5 @@
 import pygame
-from const import *
+from resources.const import *
 
 class Node:
     def __init__(self, row, col, width, total_rows) -> None:

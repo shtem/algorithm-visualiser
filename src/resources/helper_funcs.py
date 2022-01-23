@@ -1,6 +1,6 @@
 import pygame
-from const import GREY, WHITE
-from node import Node
+from resources.const import GREY, WHITE
+from resources.node import Node
 
 def reconstruct_path(came_from, current, draw):
     while current in came_from:

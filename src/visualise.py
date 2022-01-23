@@ -1,7 +1,7 @@
 import pygame
-from src.resources.const import ROWS, WIDTH
+from resources.const import ROWS, WIDTH
+from resources.helper_funcs import make_grid, draw, get_clicked_pos
 from algorithms.astar import a_star_alg
-from src.resources.helper_funcs import make_grid, draw, get_clicked_pos
 
 WIN = pygame.display.set_mode((WIDTH, WIDTH))
 pygame.display.set_caption("A* Path Finding Algorithm")

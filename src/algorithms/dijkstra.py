@@ -1,6 +1,6 @@
 import pygame
 from queue import PriorityQueue
-from src.resources.helper_funcs import reconstruct_path
+from resources.helper_funcs import reconstruct_path
 
 def dijkstra_alg(draw, grid, source, goal):
     # Dijkstra's algorithm

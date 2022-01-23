@@ -1,6 +1,6 @@
 import pygame
 from queue import PriorityQueue
-from src.resources.helper_funcs import reconstruct_path
+from resources.helper_funcs import reconstruct_path
 
 def h(n1, n2):
     # manhattan distance between 2 nodes n1 and n2
