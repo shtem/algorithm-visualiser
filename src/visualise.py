@@ -5,7 +5,7 @@ from algorithms.astar import a_star_alg
 from algorithms.dijkstra import dijkstra_alg
 
 WIN = pygame.display.set_mode((WIDTH, WIDTH))
-pygame.display.set_caption("Algorithm Visualiser")
+pygame.display.set_caption("Pathfinding Algorithm Visualiser")
 
 def main(win, width):
     grid = make_grid(ROWS, width)
