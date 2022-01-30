@@ -24,7 +24,7 @@ class DrawInformation:
         self.min_val = min(lst)
         self.max_val = max(lst)
 
-        self.block_width = round((self.width - self.SIDE_PAD) / len(lst)) # width of each block in list
+        self.block_width = math.floor((self.width - self.SIDE_PAD) / len(lst)) # width of each block in list
         self.block_height = math.floor((self.height - self.TOP_PAD) / (self.max_val - self.min_val)) # height of each block in list
         self.start_x = self.SIDE_PAD // 2
     
@@ -68,7 +68,7 @@ def draw(draw_info, algo_name, ascending):
     controls = draw_info.FONT.render("R - Reset | SPACE - Start Sorting | A - Ascending | D - Descending", 1, BLACK)
     draw_info.window.blit(controls, (draw_info.width/2 - controls.get_width()/2 , 45))
 
-    sorting = draw_info.FONT.render("I - Insertion Sort | B - Bubble Sort", 1, BLACK)
+    sorting = draw_info.FONT.render("I - Insertion Sort | B - Bubble Sort | Q = QuickSort", 1, BLACK)
     draw_info.window.blit(sorting, (draw_info.width/2 - sorting.get_width()/2 , 75))
 
     draw_list(draw_info)
@@ -77,7 +77,7 @@ def draw(draw_info, algo_name, ascending):
 def bubble_sort(draw_info, ascending=True): # generator
     lst = draw_info.lst
     
-    for i in range(len(lst) - 1): # start from the end of the list
+    for i in range(len(lst) - 1): # execute n - 2 times, n = lenght of list
         for j in range(len(lst) - 1 - i): # compare adjacent values with each other
             num1 = lst[j]
             num2 = lst[j + 1]
@@ -93,7 +93,7 @@ def bubble_sort(draw_info, ascending=True): # generator
 def insertion_sort(draw_info, ascending=True):
     lst = draw_info.lst
 
-    for i in range(1, len(lst)):
+    for i in range(1, len(lst)): # first element is in sorted subset 
         curr = lst[i] # select a number from list so we can insert it in the correct position by swapping
 
         while True:
@@ -112,15 +112,55 @@ def insertion_sort(draw_info, ascending=True):
     
     return lst
 
+def partition(draw_info, lst, start, end, ascending=True):
+    rand_pivot = random.randrange(start, end) # random pivot point chosen
+    lst[end], lst[rand_pivot] = lst[rand_pivot], lst[end] # place pivot element at end of the list
 
+    pivot = lst[end] 
+    pIndex = start
+
+    for i in range(start, end): # for each element that is not the pivot
+        curr = lst[i]
+
+        if (curr <= pivot and ascending) or (curr >= pivot and not ascending): # if current element is in the incorrect position then move element to the correct side of pivot
+            lst[i], lst[pIndex] = lst[pIndex], lst[i]
+            draw_list(draw_info, {i: GREEN, pIndex: RED}, True)
+            pIndex += 1
+    
+    lst[pIndex], lst[end] = lst[end], lst[pIndex]
+    draw_list(draw_info, {pIndex: GREEN, end: RED}, True)
+
+    return pIndex
+
+def quick_sort_aux(draw_info, lst, start, end, ascending=True):
+    if start < end:
+ 
+        # pIndex is partitioning index, lst[p] is at correct position
+        pIndex = partition(draw_info, lst, start, end, ascending)
+ 
+        # Separately sort elements before partition and after partition
+        quick_sort_aux(draw_info, lst, start, pIndex - 1, ascending)
+        quick_sort_aux(draw_info, lst, pIndex + 1, end, ascending)
+
+def quick_sort(draw_info, ascending=True):
+    # randomised quicksort
+
+    lst = draw_info.lst
+    start = 0
+    end = len(lst) - 1
+
+    quick_sort_aux(draw_info, lst, start, end, ascending)
+    yield True
+    
+    return lst
 
 def main():
     run = True 
     clock = pygame.time.Clock()
 
-    n = 50
+    n = 400
     min_val = 0
-    max_val = 100
+    max_val = 200
 
     sorting = False
     ascending = True
@@ -167,6 +207,9 @@ def main():
             elif event.key == pygame.K_i and not sorting: # INSERTION SORT
                sorting_alg = insertion_sort
                sorting_alg_name = "Insertion Sort"
+            elif event.key == pygame.K_q and not sorting: # QUICKSORT
+               sorting_alg = quick_sort
+               sorting_alg_name = "QuickSort"
 
     pygame.quit()
 
