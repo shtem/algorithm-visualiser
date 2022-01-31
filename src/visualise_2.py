@@ -24,7 +24,7 @@ class DrawInformation:
         self.min_val = min(lst)
         self.max_val = max(lst)
 
-        self.block_width = math.floor((self.width - self.SIDE_PAD) / len(lst)) # width of each block in list
+        self.block_width = math.ceil((self.width - self.SIDE_PAD) / len(lst)) # width of each block in list
         self.block_height = math.floor((self.height - self.TOP_PAD) / (self.max_val - self.min_val)) # height of each block in list
         self.start_x = self.SIDE_PAD // 2
     
@@ -47,9 +47,12 @@ def draw_list(draw_info, colour_pos={}, clear_bg=False):
         pygame.draw.rect(draw_info.window, draw_info.BG_COL, clear_rect)
 
     for i, val in enumerate(lst):
-        x = draw_info.start_x + i * draw_info.block_width # x position we want to draw the block from
+        x = draw_info.start_x + (i * draw_info.block_width) # x position we want to draw the block from
         y = draw_info.height - (val - draw_info.min_val) * draw_info.block_height # y position
         colour = GRADIENTS[i % 3] # remainder always 0 1 2
+
+        if (draw_info.width - draw_info.SIDE_PAD//2) <= x: # if x position goes off the side pads then stop drawing list blocks
+            break
 
         if i in colour_pos:
             colour = colour_pos[i]
@@ -128,7 +131,7 @@ def partition(draw_info, lst, start, end, ascending=True):
             pIndex += 1
     
     lst[pIndex], lst[end] = lst[end], lst[pIndex]
-    draw_list(draw_info, {pIndex: GREEN, end: RED}, True)
+    draw_list(draw_info, {end: ORANGE, pIndex: RED}, True)
 
     return pIndex
 
@@ -158,7 +161,7 @@ def main():
     run = True 
     clock = pygame.time.Clock()
 
-    n = 400
+    n = 700
     min_val = 0
     max_val = 200
 
