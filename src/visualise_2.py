@@ -61,6 +61,7 @@ def draw_list(draw_info, colour_pos={}, clear_bg=False):
     
     if clear_bg:
         pygame.display.update()
+        pygame.event.pump()
 
 def draw(draw_info, algo_name, ascending):
     draw_info.window.fill(draw_info.BG_COL)
@@ -76,6 +77,7 @@ def draw(draw_info, algo_name, ascending):
 
     draw_list(draw_info)
     pygame.display.update()
+    pygame.event.pump()
 
 def bubble_sort(draw_info, ascending=True): # generator
     lst = draw_info.lst
