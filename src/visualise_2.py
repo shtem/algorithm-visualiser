@@ -71,7 +71,7 @@ def draw(draw_info, algo_name, ascending):
     controls = draw_info.FONT.render("R - Reset | SPACE - Start Sorting | A - Ascending | D - Descending", 1, BLACK)
     draw_info.window.blit(controls, (draw_info.width/2 - controls.get_width()/2 , 45))
 
-    sorting = draw_info.FONT.render("I - Insertion Sort | B - Bubble Sort | Q = QuickSort", 1, BLACK)
+    sorting = draw_info.FONT.render("I - Insertion Sort | B - Bubble Sort | Q = QuickSort | H = Heap Sort", 1, BLACK)
     draw_info.window.blit(sorting, (draw_info.width/2 - sorting.get_width()/2 , 75))
 
     draw_list(draw_info)
@@ -157,6 +157,61 @@ def quick_sort(draw_info, ascending=True):
     
     return lst
 
+def sift_down(draw_info, lst, i, upper, ascending=True):
+    # sift the new first element to its appropriate index in the heap - mntains max/min heap property
+
+    # i = parent/root element
+    # upper = upper bound index of list = n
+
+    while(True):
+        l, r = 2*i+1, 2*i+2 # indexes of left and right children
+
+        if max(l, r) < upper: # if there are 2 children then children's indices have to be smaller than upper bound to be valid
+            if (lst[i] >= max(lst[l], lst[r]) and ascending) or (lst[i] <= min(lst[l], lst[r]) and not ascending): # if parent node is greater/less than child nodes don't need to swap
+                break 
+            elif (lst[l] > lst[r] and ascending) or (lst[l] < lst[r] and not ascending): # if left child largest/smallest swap left child with parent
+                lst[l], lst[i] = lst[i], lst[l]
+                draw_list(draw_info, {i: GREEN, l: RED}, True)
+                i = l 
+            else: # else right child largest/smallest swap right child with parent
+                lst[r], lst[i] = lst[i], lst[r] 
+                draw_list(draw_info, {i: GREEN, r: RED}, True)
+                i = r
+        elif l < upper: # if there is one child that child is a left node then it's index has to be smaller than upperbound to be valid
+            if (lst[l] > lst[i] and ascending) or (lst[l] < lst[i] and not ascending):
+                lst[l], lst[i] = lst[i], lst[l]
+                draw_list(draw_info, {i: GREEN, l: RED}, True)
+                i = l
+            else:
+                break
+        elif r < upper: # if there is one child that child is a right node then it's index has to be smaller than upperbound to be valid
+            if (lst[r] > lst[i] and ascending) or (lst[r] < lst[i] and not ascending):
+                lst[r], lst[i] = lst[i], lst[r]
+                draw_list(draw_info, {i: GREEN, r: RED}, True)
+                i = l
+            else:
+                break
+        else: # no children
+            break
+
+def heap_sort(draw_info, ascending=True):
+    lst = draw_info.lst
+    n = len(lst)
+
+    # (n-2)//2 = index of very last parent
+    for i in range((n-2)//2, -1, -1): # heapify
+        sift_down(draw_info, lst, i, n, ascending)
+    
+    for end in range(n-1, 0, -1): # sort list
+        lst[0], lst[end] = lst[end], lst[0]
+        draw_list(draw_info, {0: GREEN, end: ORANGE}, True)
+        sift_down(draw_info, lst, 0, end, ascending)
+
+    yield True
+    
+    return lst
+
+
 def main():
     run = True 
     clock = pygame.time.Clock()
@@ -213,6 +268,9 @@ def main():
             elif event.key == pygame.K_q and not sorting: # QUICKSORT
                sorting_alg = quick_sort
                sorting_alg_name = "QuickSort"
+            elif event.key == pygame.K_h and not sorting: # HEAP SORT
+               sorting_alg = heap_sort
+               sorting_alg_name = "Heap Sort"
 
     pygame.quit()
 
