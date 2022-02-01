@@ -160,7 +160,7 @@ def quick_sort(draw_info, ascending=True):
     return lst
 
 def sift_down(draw_info, lst, i, upper, ascending=True):
-    # sift the new first element to its appropriate index in the heap - mntains max/min heap property
+    # sift the new first element, i, to its appropriate index in the heap - mantains max/min heap property
 
     # i = parent/root element
     # upper = upper bound index of list = n
@@ -190,7 +190,7 @@ def sift_down(draw_info, lst, i, upper, ascending=True):
             if (lst[r] > lst[i] and ascending) or (lst[r] < lst[i] and not ascending):
                 lst[r], lst[i] = lst[i], lst[r]
                 draw_list(draw_info, {i: GREEN, r: RED}, True)
-                i = l
+                i = r
             else:
                 break
         else: # no children
