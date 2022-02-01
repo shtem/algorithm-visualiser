@@ -144,8 +144,10 @@ def quick_sort_aux(draw_info, lst, start, end, ascending=True):
         pIndex = partition(draw_info, lst, start, end, ascending)
  
         # Separately sort elements before partition and after partition
-        quick_sort_aux(draw_info, lst, start, pIndex - 1, ascending)
-        quick_sort_aux(draw_info, lst, pIndex + 1, end, ascending)
+        yield from quick_sort_aux(draw_info, lst, start, pIndex - 1, ascending)
+        yield from quick_sort_aux(draw_info, lst, pIndex + 1, end, ascending)
+    
+    yield True
 
 def quick_sort(draw_info, ascending=True):
     # randomised quicksort
@@ -154,8 +156,7 @@ def quick_sort(draw_info, ascending=True):
     start = 0
     end = len(lst) - 1
 
-    quick_sort_aux(draw_info, lst, start, end, ascending)
-    yield True
+    yield from quick_sort_aux(draw_info, lst, start, end, ascending)
     
     return lst
 
@@ -203,13 +204,13 @@ def heap_sort(draw_info, ascending=True):
     # (n-2)//2 = index of very last parent
     for i in range((n-2)//2, -1, -1): # heapify
         sift_down(draw_info, lst, i, n, ascending)
+        yield True
     
     for end in range(n-1, 0, -1): # sort list
         lst[0], lst[end] = lst[end], lst[0]
         draw_list(draw_info, {0: GREEN, end: ORANGE}, True)
         sift_down(draw_info, lst, 0, end, ascending)
-
-    yield True
+        yield True
     
     return lst
 
