@@ -76,7 +76,7 @@ def main():
     sorting_alg_name = "Bubble Sort"
 
     lst = generate_starting_list(n, min_val, max_val)
-    draw_info = DrawInformation(WIDTH, HEIGHT, lst)
+    draw_info = DrawInformation(WIDTH, WIDTH, lst)
 
     while run:
         clock.tick(120)  # 120 fps

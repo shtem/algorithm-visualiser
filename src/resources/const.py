@@ -1,4 +1,3 @@
-HEIGHT = 700
 WIDTH = 700
 ROWS = 50
 
