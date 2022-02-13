@@ -1,6 +1,7 @@
 import pygame
 from resources.const import *
 
+
 class Node:
     def __init__(self, row, col, width, total_rows) -> None:
         self.row = row
@@ -38,13 +39,13 @@ class Node:
 
     def make_open(self):
         self.colour = GREEN
-    
+
     def make_obstacle(self):
         self.colour = BLACK
-    
+
     def make_source(self):
         self.colour = ORANGE
-    
+
     def make_goal(self):
         self.colour = CYAN
 
@@ -58,16 +59,22 @@ class Node:
         # only want to traverse nodes that we can reach, so only add neighbouring nodes that are not obstacles to the list
         self.neighbours = []
 
-        if self.row < self.total_rows - 1 and not grid[self.row + 1][self.col].is_obstacle(): # DOWN
+        if (
+            self.row < self.total_rows - 1
+            and not grid[self.row + 1][self.col].is_obstacle()
+        ):  # DOWN
             self.neighbours.append(grid[self.row + 1][self.col])
 
-        if self.row > 0 and not grid[self.row - 1][self.col].is_obstacle(): # UP
+        if self.row > 0 and not grid[self.row - 1][self.col].is_obstacle():  # UP
             self.neighbours.append(grid[self.row - 1][self.col])
 
-        if self.col < self.total_rows - 1 and not grid[self.row][self.col + 1].is_obstacle(): # RIGHT
+        if (
+            self.col < self.total_rows - 1
+            and not grid[self.row][self.col + 1].is_obstacle()
+        ):  # RIGHT
             self.neighbours.append(grid[self.row][self.col + 1])
 
-        if self.col > 0 and not grid[self.row][self.col - 1].is_obstacle(): # LEFT
+        if self.col > 0 and not grid[self.row][self.col - 1].is_obstacle():  # LEFT
             self.neighbours.append(grid[self.row][self.col - 1])
 
     def __lt__(self):
