@@ -14,5 +14,6 @@ Tutorials followed [[1]](https://www.youtube.com/watch?v=JtiK0DOeI4A&t=10s), [[2
 -   Q = Quick Sort
 -   H = Heap Sort
 -   R = Reset
+-   [SPACE] = Start Sorting
     - A = Ascending
     - D = Descending
